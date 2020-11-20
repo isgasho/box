@@ -1,8 +1,6 @@
 ---
 builds:
-  - id: box
-    binary: box
-    main: ./cmd/box
+  - binary: box
     flags: -tags "static_build"
     ldflags: >-
       -w
