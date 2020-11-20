@@ -8,7 +8,7 @@ It basically is a tiny version of docker, it uses neither
 [runc](https://github.com/opencontainers/runc).
 Only a set of the Linux features.
 
-> __NOTE__: This is a heavily modified fork (_of was_) of [vessel](//github.com/0xc0d/vessel.git)
+> __NOTE__: This is a heavily modified fork (_of was_) of [vessel](https://github.com/0xc0d/vessel)
             and a reimplementation of the `box` utility from [ulinux](https://github.com/prologuc/ulinux).
 
 ## Features
