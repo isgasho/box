@@ -5,6 +5,8 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/google/go-containerregistry/pkg/crane"
+
 	"github.com/prologic/box/archive"
 )
 
@@ -13,6 +15,15 @@ type Repositories map[string]Repository
 
 // Download downloads image's layers.
 func (i *Image) Download() error {
+	digest, err := i.Digest()
+	if err != nil {
+		return err
+	}
+
+	if err := crane.SaveOCI(i, filepath.Join(ImagesDir, digest.Hex)); err != nil {
+		return err
+	}
+
 	layers, err := i.Layers()
 	if err != nil {
 		return err

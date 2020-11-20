@@ -2,17 +2,21 @@ package image
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/google/go-containerregistry/pkg/crane"
 	"github.com/google/go-containerregistry/pkg/name"
 	v1 "github.com/google/go-containerregistry/pkg/v1"
+	"github.com/google/go-containerregistry/pkg/v1/layout"
 )
 
 const (
 	RepoFile  = "/var/lib/box/images/repositories.json"
+	ImagesDir = "/var/lib/box/images"
 	LayersDir = "/var/lib/box/images/layers"
 )
 
@@ -29,10 +33,35 @@ type Image struct {
 //
 // It pulls image ans sets the Registry, Repository, Name, and Tag.
 func NewImage(src string) (*Image, error) {
+	imgs, err := GetAll()
+	if err != nil {
+		return nil, err
+	}
+
 	tag, err := name.NewTag(src)
 	if err != nil {
 		return nil, err
 	}
+
+	for _, img := range imgs {
+		if img.Name == tag.Name() {
+			path, err := layout.FromPath(filepath.Join(ImagesDir, img.ID))
+			if err != nil {
+				return nil, err
+			}
+			h, err := v1.NewHash(fmt.Sprintf("sha256:%s", img.ID))
+			if err != nil {
+				return nil, err
+			}
+			loadedImage, err := path.Image(h)
+			if err != nil {
+				return nil, err
+			}
+			img.Image = loadedImage
+			return img, nil
+		}
+	}
+
 	img, err := crane.Pull(tag.Name())
 	if err != nil {
 		return nil, err
@@ -84,8 +113,15 @@ func GetAll() ([]*Image, error) {
 
 	for repo, image := range repos {
 		for nameTag, hash := range image {
+			ref, err := name.ParseReference(nameTag)
+			if err != nil {
+				return nil, err
+			}
+
 			newImg := &Image{
 				ID:         strings.TrimLeft(hash, "sha256:"),
+				Name:       ref.String(),
+				Registry:   ref.Context().Registry.RegistryStr(),
 				Repository: repo,
 				Tag:        strings.Split(nameTag, ":")[1],
 			}
