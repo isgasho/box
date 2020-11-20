@@ -4,6 +4,7 @@ import (
 	"errors"
 	"os"
 
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -29,7 +30,21 @@ func NewBoxCommand() *cobra.Command {
 		Short:                 "A tiny tool for managing containers and sandbox processes",
 		TraverseChildren:      true,
 		DisableFlagsInUseLine: true,
+		PersistentPreRun: func(cmd *cobra.Command, args []string) {
+			// set logging level
+			isDebug, _ := cmd.Flags().GetBool("debug")
+			if isDebug {
+				log.SetLevel(log.DebugLevel)
+			} else {
+				log.SetLevel(log.InfoLevel)
+			}
+		},
 	}
+
+	cmd.PersistentFlags().BoolP(
+		"debug", "D", false,
+		"Enable debug logging",
+	)
 
 	return cmd
 }
