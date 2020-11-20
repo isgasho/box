@@ -1,0 +1,5 @@
+*~
+*.bak
+
+/box
+/cmd/box/box

@@ -1,0 +1,27 @@
+---
+builds:
+  - id: box
+    binary: box
+    main: ./cmd/box
+    flags: -tags "static_build"
+    ldflags: >-
+      -w
+      -X github.com/prologic/box/internal.Version={{.Version}}
+      -X github.com/prologic/box/internal.Commit={{.Commit}}
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+    goarch:
+      - amd64
+      - arm64
+    goarm:
+      - 6
+      - 7
+signs:
+  - artifacts: checksum
+release:
+  github:
+    owner: prologic
+    name: box
+  draft: true

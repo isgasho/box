@@ -1,0 +1,10 @@
+package box
+
+/* box
+
+A command-line utility (_non-daemon_) for creating Linux containers sandboxing
+a process written in Go.
+
+It basically is a tiny version of docker, it uses neither containerd or runc.
+Only a set of the Linux features.
+*/
