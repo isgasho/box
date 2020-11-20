@@ -1,5 +1,7 @@
 *~
 *.bak
 
+/dist
+
 /box
 /cmd/box/box
