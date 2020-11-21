@@ -1,9 +1,10 @@
 package network
 
 import (
+	"net"
+
 	"github.com/pkg/errors"
 	"github.com/vishvananda/netlink"
-	"net"
 )
 
 func SetupBridge(name string) error {
@@ -110,7 +111,6 @@ func LinkRename(old, new string) error {
 	}
 	return netlink.LinkSetName(link, new)
 }
-
 
 func IPExists(ip net.IP) (bool, error) {
 	linkList, err := netlink.AddrList(nil, 0)

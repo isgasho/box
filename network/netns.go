@@ -1,15 +1,17 @@
 package network
 
 import (
-	"github.com/prologic/box/filesystem"
-	"github.com/pkg/errors"
-	"github.com/vishvananda/netlink"
-	"golang.org/x/sys/unix"
 	"os"
 	"syscall"
+
+	"github.com/pkg/errors"
+	"github.com/prologic/box/filesystem"
+	"github.com/vishvananda/netlink"
+	"golang.org/x/sys/unix"
 )
 
 type Unsetter func() error
+type Releaser func() error
 
 func MountNewNetworkNamespace(nsTarget string) (filesystem.Unmounter, error) {
 	_, err := os.OpenFile(nsTarget, syscall.O_RDONLY|syscall.O_CREAT|syscall.O_EXCL, 0644)
