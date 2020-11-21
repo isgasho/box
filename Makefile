@@ -1,4 +1,5 @@
 .PHONY: dev build install release test clean
+
 GOOS=linux
 CGO_ENABLED=0
 VERSION=$(shell git describe --abbrev=0 --tags 2>/dev/null || echo "$VERSION")
