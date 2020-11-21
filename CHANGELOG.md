@@ -1,10 +1,22 @@
 
+<a name="0.0.4"></a>
+## [0.0.4](https://github.com/prologic/box/compare/0.0.3...0.0.4) (2020-11-21)
+
+### Features
+
+* Add an IPAM so we can assign IP Addresses to containers
+
+
 <a name="0.0.3"></a>
 ## [0.0.3](https://github.com/prologic/box/compare/0.0.2...0.0.3) (2020-11-21)
 
 ### Features
 
 * Add an extra git push to release script
+
+### Updates
+
+* Update CHANGELOG for 0.0.3
 
 
 <a name="0.0.2"></a>
